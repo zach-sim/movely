@@ -1,0 +1,24 @@
+dhbc,dhbd,rcc,tac
+01,Northland                         ,
+02,Waitemata                         ,
+03,Auckland                          ,02,076
+04,Counties Manukau                  ,02,076
+05,Waikato                           ,03,015
+06,Lakes                             ,04,024
+07,Bay of Plenty                     ,04,025
+08,Tairawhiti                        ,05,028
+10,Hawke's Bay                       ,06,029
+09,Taranaki                          ,07,035
+11,Whanganui                         ,08,036
+12,Midcentral                        ,09,043
+13,Hutt                              ,09,046
+14,Capital and Coast                 ,09,044
+15,Wairarapa                         ,
+16,Nelson Marlborough                ,
+17,West Coast                        ,
+10,Hawke's Bay                       ,
+18,Canterbury                        ,
+19,South Canterbury                  ,
+22,Southern                          ,
+07,Bay of Plenty                     ,
+99,Area outside District Health Board,

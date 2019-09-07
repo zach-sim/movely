@@ -1,0 +1,70 @@
+tac,tad,rcc
+001,Far North District                ,01
+002,Whangarei District                ,01
+003,Kaipara District                  ,01
+076,Auckland                          ,02
+013,Waikato District                  ,03
+012,Hauraki District                  ,03
+017,Waipa District                    ,03
+016,Hamilton City                     ,03
+018,Otorohanga District               ,03
+020,Waitomo District                  ,03
+021,Taupo District                    ,03
+036,Ruapehu District                  ,08
+011,Thames-Coromandel District        ,03
+022,Western Bay of Plenty District    ,04
+015,Matamata-Piako District           ,03
+019,South Waikato District            ,03
+023,Tauranga City                     ,04
+024,Rotorua District                  ,03
+021,Taupo District                    ,04
+025,Whakatane District                ,04
+026,Kawerau District                  ,04
+027,Opotiki District                  ,04
+028,Gisborne District                 ,05
+029,Wairoa District                   ,06
+031,Napier City                       ,06
+030,Hastings District                 ,06
+032,Central Hawke's Bay District      ,06
+041,Tararua District                  ,09
+033,New Plymouth District             ,07
+034,Stratford District                ,08
+035,South Taranaki District           ,07
+037,Wanganui District                 ,08
+038,Rangitikei District               ,06
+039,Manawatu District                 ,08
+040,Palmerston North City             ,08
+042,Horowhenua District               ,08
+043,Kapiti Coast District             ,09
+045,Upper Hutt City                   ,09
+046,Lower Hutt City                   ,09
+044,Porirua City                      ,09
+047,Wellington City                   ,09
+048,Masterton District                ,09
+049,Carterton District                ,09
+050,South Wairarapa District          ,09
+053,Marlborough District              ,18
+054,Kaikoura District                 ,13
+051,Tasman District                   ,16
+052,Nelson City                       ,17
+055,Buller District                   ,12
+056,Grey District                     ,12
+057,Westland District                 ,12
+058,Hurunui District                  ,13
+059,Waimakariri District              ,13
+062,Selwyn District                   ,13
+060,Christchurch City                 ,13
+067,Chatham Islands Territory         ,99
+063,Ashburton District                ,13
+064,Timaru District                   ,13
+065,Mackenzie District                ,13
+066,Waimate District                  ,13
+068,Waitaki District                  ,14
+071,Dunedin City                      ,14
+072,Clutha District                   ,14
+069,Central Otago District            ,14
+070,Queenstown-Lakes District         ,14
+073,Southland District                ,15
+075,Invercargill City                 ,15
+074,Gore District                     ,15
+999,Area Outside Territorial Authority,04
