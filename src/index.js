@@ -12,7 +12,7 @@ import Pbf from 'pbf';
 const rootReducer = (
   state = {
     loading: 0,
-    visibleLayers: [],
+    visibleLayers: ['car'],
   }, action) => {
     switch(action.type) {
       case 'ADD_PLACEHOLDER_DATA':
@@ -25,10 +25,10 @@ const rootReducer = (
         return {
           ...state,
           loading: state.loading - 1,
-          visibleLayers: [
-            ...state.visibleLayers,
-            action.name,
-          ],
+          // visibleLayers: [
+          //   ...state.visibleLayers,
+          //   action.name,
+          // ],
           [action.name]: action.data,
         };
       case 'TOGGLE_VISIBILITY':
@@ -67,7 +67,7 @@ const importDataAction = (name, importFn) => (dispatch) => {
   })
 }
 store.dispatch(importDataAction('building', () => import('./data/wgtnBuildings.geobuf')))
-store.dispatch(importDataAction('area', () => import('./data/areaUnits.geobuf')))
+// store.dispatch(importDataAction('area', () => import('./data/areaUnits.geobuf')))
 
 ReactDOM.render(
   <Provider {...{ store }}>
