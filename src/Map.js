@@ -7,9 +7,7 @@ import { GeoJsonLayer } from '@deck.gl/layers';
 import { useSelector } from 'react-redux';
 import useWindowSize from '@rehooks/window-size';
 import {TripsLayer} from '@deck.gl/geo-layers';
-import carTripData from './data/cars.json';
-import walkTripData from './data/walk.json';
-import bicycleTripData from './data/bicycle.json';
+import allTripData from './data/tripData.js';
 
 const useAnimationFrame = callback => {
   // Use useRef for mutable variables that we want to persist
@@ -42,7 +40,9 @@ const initialViewport = {
   pitch: 45,
 }
 
-const MaxTime = 12250;
+const StartTime = 7.5 * 60 * 60; // 7:30 in seconds
+const MaxTime = 9 * 60 * 60; // 9:00 in seconds
+
 const Map = () => {
   const windowSize = useWindowSize();
   const [viewport, setVp] = useState(initialViewport);
@@ -53,9 +53,9 @@ const Map = () => {
   const visibleLayers = useSelector(state => state.visibleLayers);
 
 
-  const [time, setTime] = useState(1400);
+  const [time, setTime] = useState(0);
   useAnimationFrame(deltaTime => {
-    setTime(prevTime => (prevTime + deltaTime * 0.015) % MaxTime)
+    setTime(prevTime => (prevTime + deltaTime * 0.015) % (MaxTime - StartTime))
   })
 
   return (
@@ -105,43 +105,43 @@ const Map = () => {
           {visibleLayers.includes('car') && <TripsLayer
             {...{
               id: 'trips',
-              data: carTripData,
+              data: allTripData.car,
               getPath: d => d.path,
               getTimestamps: d => d.timestamps,
               getColor: d => [245, 185, 66],
               opacity: 0.3,
               widthMinPixels: 5,
               rounded: true,
-              trailLength: 30,
-              currentTime: time + 10000,
+              trailLength: 60,
+              currentTime: time + StartTime,
             }}
           />}
           {visibleLayers.includes('bike') && <TripsLayer
             {...{
               id: 'bike',
-              data: bicycleTripData,
+              data: allTripData.bicycle,
               getPath: d => d.path,
               getTimestamps: d => d.timestamps,
               getColor: d => [66, 245, 185],
               opacity: 0.3,
-              widthMinPixels: 5,
+              widthMinPixels: 4,
               rounded: true,
-              trailLength: 30,
-              currentTime: time + 10000,
+              trailLength: 45,
+              currentTime: time + StartTime,
             }}
           />}
           {visibleLayers.includes('walk') && <TripsLayer
             {...{
               id: 'walk',
-              data: walkTripData,
+              data: allTripData.walk,
               getPath: d => d.path,
               getTimestamps: d => d.timestamps,
               getColor: d => [185, 66, 245],
               opacity: 0.3,
-              widthMinPixels: 5,
+              widthMinPixels: 3,
               rounded: true,
               trailLength: 30,
-              currentTime: time + 10000,
+              currentTime: time + StartTime,
             }}
           />}
       </DeckGL>

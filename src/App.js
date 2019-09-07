@@ -9,7 +9,6 @@ const Nav = styled.nav`
   width: 4rem;
   display: flex;
   flex-direction: column;
-  justify-content: end;
   background-color: #353b43;
   height: 100vh;
   font-size: 2em;
@@ -26,6 +25,10 @@ const Nav = styled.nav`
   }
 `;
 
+const Spacer = styled.span`
+  flex: 1;
+`;
+
 const App = () => {
   const visibleLayers = useSelector(state => state.visibleLayers);
   const availableLayers = useSelector(state => {
@@ -35,6 +38,7 @@ const App = () => {
   const dispatch = useDispatch();
   return (<>
     <Nav>
+      <Spacer />
       <FaWalking
         onClick={() => {
           dispatch({ type: 'TOGGLE_VISIBILITY', name: 'walk' });
@@ -53,6 +57,7 @@ const App = () => {
         }}
         style={{ opacity: visibleLayers.includes('car') ? 1 : 0.25 }}
       />
+      <Spacer />
       {availableLayers.includes('building') && <FaBuilding
         onClick={() => {
           dispatch({ type: 'TOGGLE_VISIBILITY', name: 'building' });

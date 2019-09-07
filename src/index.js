@@ -12,7 +12,7 @@ import Pbf from 'pbf';
 const rootReducer = (
   state = {
     loading: 0,
-    visibleLayers: ['car'],
+    visibleLayers: [],
   }, action) => {
     switch(action.type) {
       case 'ADD_PLACEHOLDER_DATA':
