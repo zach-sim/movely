@@ -36,7 +36,7 @@ const initialViewport = {
   zoom: 5,
   latitude: -41.2865,
   longitude: 174.7762,
-  zoom: 14,
+  zoom: 15,
   pitch: 45,
 }
 
@@ -55,7 +55,7 @@ const Map = () => {
 
   const [time, setTime] = useState(0);
   useAnimationFrame(deltaTime => {
-    setTime(prevTime => (prevTime + deltaTime * 0.015) % (MaxTime - StartTime))
+    setTime(prevTime => (prevTime + deltaTime * 0.005) % (MaxTime - StartTime))
   })
 
   return (
@@ -67,6 +67,35 @@ const Map = () => {
         ...viewport,
         onViewportChange: ({ width, height, ...vp }) => setVp(vp),
         mapStyle,
+      }}
+      onLoad={(ev) => {
+        const map = ev.target;
+
+        map.addLayer({
+          'id': '3d-buildings',
+          "source": "mapbox",
+          "source-layer": "building",
+          'filter': ['==', 'extrude', 'true'],
+          'type': 'fill-extrusion',
+          'minzoom': 10,
+          'paint': {
+          'fill-extrusion-color': '#aaa',
+
+          // use an 'interpolate' expression to add a smooth transition effect to the
+          // buildings as the user zooms in
+          'fill-extrusion-height': [
+          "interpolate", ["linear"], ["zoom"],
+          10, 0,
+          10.05, ["get", "height"]
+          ],
+          'fill-extrusion-base': [
+          "interpolate", ["linear"], ["zoom"],
+          10, 0,
+          10.05, ["get", "min_height"]
+          ],
+          'fill-extrusion-opacity': .6
+          }
+          });
       }}
     >
       <DeckGL viewState={{
