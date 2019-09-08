@@ -7,7 +7,9 @@ import { GeoJsonLayer } from '@deck.gl/layers';
 import { useSelector } from 'react-redux';
 import useWindowSize from '@rehooks/window-size';
 import {TripsLayer} from '@deck.gl/geo-layers';
-import allTripData from './data/tripData.js';
+import allTripData from './data/2013tripData.js';
+import futureTripData from './data/2043tripData.js';
+import mapColours from './colours';
 
 const useAnimationFrame = callback => {
   // Use useRef for mutable variables that we want to persist
@@ -51,12 +53,16 @@ const Map = () => {
     return data;
   });
   const visibleLayers = useSelector(state => state.visibleLayers);
+  window.geoData = geoData;
 
 
   const [time, setTime] = useState(0);
   useAnimationFrame(deltaTime => {
     setTime(prevTime => (prevTime + deltaTime * 0.005) % (MaxTime - StartTime))
   })
+
+  const future = useSelector(state => state.future);
+  const tripData = future ? futureTripData : allTripData;
 
   return (
     <ReactMapGL
@@ -71,31 +77,31 @@ const Map = () => {
       onLoad={(ev) => {
         const map = ev.target;
 
-        map.addLayer({
-          'id': '3d-buildings',
-          "source": "mapbox",
-          "source-layer": "building",
-          'filter': ['==', 'extrude', 'true'],
-          'type': 'fill-extrusion',
-          'minzoom': 10,
-          'paint': {
-          'fill-extrusion-color': '#aaa',
-
-          // use an 'interpolate' expression to add a smooth transition effect to the
-          // buildings as the user zooms in
-          'fill-extrusion-height': [
-          "interpolate", ["linear"], ["zoom"],
-          10, 0,
-          10.05, ["get", "height"]
-          ],
-          'fill-extrusion-base': [
-          "interpolate", ["linear"], ["zoom"],
-          10, 0,
-          10.05, ["get", "min_height"]
-          ],
-          'fill-extrusion-opacity': .6
-          }
-          });
+        // map.addLayer({
+        //   'id': '3d-buildings',
+        //   "source": "mapbox",
+        //   "source-layer": "building",
+        //   'filter': ['==', 'extrude', 'true'],
+        //   'type': 'fill-extrusion',
+        //   'minzoom': 10,
+        //   'paint': {
+        //   'fill-extrusion-color': '#aaa',
+        //
+        //   // use an 'interpolate' expression to add a smooth transition effect to the
+        //   // buildings as the user zooms in
+        //   'fill-extrusion-height': [
+        //   "interpolate", ["linear"], ["zoom"],
+        //   10, 0,
+        //   10.05, ["get", "height"]
+        //   ],
+        //   'fill-extrusion-base': [
+        //   "interpolate", ["linear"], ["zoom"],
+        //   10, 0,
+        //   10.05, ["get", "min_height"]
+        //   ],
+        //   'fill-extrusion-opacity': .6
+        //   }
+        //   });
       }}
     >
       <DeckGL viewState={{
@@ -115,18 +121,30 @@ const Map = () => {
             lineWidthMinPixels: 1,
             getLineWidth: 10,
           }} />}
+          {visibleLayers.includes('carParks') && <GeoJsonLayer
+            {...{
+              data: geoData.carParks,
+              id: 'carParks',
+              opacity: 0.5,
+              filled: true,
+              stroked: true,
+              getLineColor: f => [200, 200, 200],
+              lineWidthMinPixels: 1,
+              getLineWidth: 5,
+            }} />}
           {visibleLayers.includes('building') && <GeoJsonLayer
             {...{
               data: geoData.building,
               id: 'buildings',
-              opacity: 0.75,
+              opacity: 0.0250,
               filled: true,
               stroked: true,
               extruded: true,
-              getLineColor: f => [0, 0, 0],
+              wireframe: true,
+              getLineColor: f => [100, 100, 100],
               getFillColor: f => [150, 150, 150],
               lineWidthMinPixels: 1,
-              getLineWidth: 10,
+              getLineWidth: 3,
               getElevation: building => {
                 return building.properties.approx_hei;
               },
@@ -134,42 +152,42 @@ const Map = () => {
           {visibleLayers.includes('car') && <TripsLayer
             {...{
               id: 'trips',
-              data: allTripData.car,
+              data: tripData.car,
               getPath: d => d.path,
               getTimestamps: d => d.timestamps,
-              getColor: d => [245, 185, 66],
-              opacity: 0.3,
-              widthMinPixels: 5,
+              getColor: d => mapColours.car,
+              opacity: 1,
+              widthMinPixels: 4,
               rounded: true,
-              trailLength: 60,
+              trailLength: 3,
               currentTime: time + StartTime,
             }}
           />}
           {visibleLayers.includes('bike') && <TripsLayer
             {...{
               id: 'bike',
-              data: allTripData.bicycle,
+              data: tripData.bicycle,
               getPath: d => d.path,
               getTimestamps: d => d.timestamps,
-              getColor: d => [66, 245, 185],
-              opacity: 0.3,
+              getColor: d => mapColours.bike,
+              opacity: 1,
               widthMinPixels: 4,
               rounded: true,
-              trailLength: 45,
+              trailLength: 7,
               currentTime: time + StartTime,
             }}
           />}
           {visibleLayers.includes('walk') && <TripsLayer
             {...{
               id: 'walk',
-              data: allTripData.walk,
+              data: tripData.walk,
               getPath: d => d.path,
               getTimestamps: d => d.timestamps,
-              getColor: d => [185, 66, 245],
-              opacity: 0.3,
-              widthMinPixels: 3,
+              getColor: d => mapColours.walk,
+              opacity: 1,
+              widthMinPixels: 4,
               rounded: true,
-              trailLength: 30,
+              trailLength: 10,
               currentTime: time + StartTime,
             }}
           />}

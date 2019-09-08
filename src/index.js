@@ -13,8 +13,19 @@ const rootReducer = (
   state = {
     loading: 0,
     visibleLayers: [],
+    future: false,
   }, action) => {
     switch(action.type) {
+      case 'FUTURE_ON':
+        return {
+          ...state,
+          future: true,
+        }
+      case 'FUTURE_OFF':
+        return {
+          ...state,
+          future: false,
+        }
       case 'ADD_PLACEHOLDER_DATA':
         return {
           ...state,
@@ -54,11 +65,7 @@ const rootReducer = (
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 const importDataAction = (name, importFn) => (dispatch) => {
   dispatch({ type: 'ADD_PLACEHOLDER_DATA', name });
-  importFn().then(res => {
-    return fetch(res.default);
-  }).then(res => res.arrayBuffer()).then(data => {
-    return decode(new Pbf(data));
-  }).then(data => {
+  importFn().then(data => {
     dispatch({
       type: 'ADD_DATA',
       name,
@@ -66,7 +73,14 @@ const importDataAction = (name, importFn) => (dispatch) => {
     })
   })
 }
-store.dispatch(importDataAction('building', () => import('./data/wgtnBuildings.geobuf')))
+
+const pbfProcess = (pro) => pro.then(res => {
+  return fetch(res.default);
+}).then(res => res.arrayBuffer()).then(data => {
+  return decode(new Pbf(data));
+});
+store.dispatch(importDataAction('building', () => pbfProcess(import('./data/wgtnBuildings.geobuf'))));
+store.dispatch(importDataAction('carParks', () => import('./data/carParks.geojson.json').then(d => ({features: d.features.filter(() => Math.random() > 0.9), type: 'FeatureCollection'}))))
 // store.dispatch(importDataAction('area', () => import('./data/areaUnits.geobuf')))
 
 ReactDOM.render(
